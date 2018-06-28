@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>tbl2json</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+</head>
+
+<body>
+  <div class="old_tbl">
+    <h2>待转换的tbl</h2>
+    <div class="notice">
+      请选择tbl：
+      <input type="file" id="upfile" class="upfile">
+      <label for="upfile" class="ui-button ui-button-warning">选择tbl文件</label>
+    </div>
+    <textarea name="tbl" id="tbl" cols="30" rows="10" readonly></textarea>
+  </div>
+  <div class="new_json">
+    <h2>转换后的json</h2>
+    <div class="notice">
+      点击右边图标转换
+      <input type="button" id="convertfile" class="upfile">
+      <label for="convertfile" class="ui-button ui-button-warning">点击转换</label>
+    </div>
+    <textarea name="new_json" id="new_json" cols="30" rows="10" readonly></textarea>
+  </div>
+
+  <script>
+    var tblInput = document.getElementById('tbl');
+    var jsonOutput = document.getElementById('new_json');
+    var eleFile = document.getElementById('upfile');
+    var eleConvert = document.getElementById('convertFile');
+    var result = null;
+
+    // 创建一个 FileReader 用来读取本地文件
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      result = e.target.result;
+      // 把读到的内容打在 textarea 内
+      tblInput.value = e.target.result;
+
+      // 正则匹配规则
+      // 1. 匹配所有除换行符以外的空白字符，删除
+      // 2. 匹配所有以 // 开头的文字（即注释），删除
+      // 3. 匹配所有的"（英文双引号），删除
+      result = result.replace(/ +/gi, "").replace(/\/\/.*/g, "").replace(/"/gi, "");
+
+      // Auto-generated code
+      const regex = /(?<=\()\S+(?=\))/g;
+
+      let m;
+
+      while ((m = regex.exec(result)) !== null) {
+        // This is necessary to avoid infinite loops with zero-width matches
+        if (m.index === regex.lastIndex) {
+          regex.lastIndex++;
+        }
+
+        // The result can be accessed through the `m`-variable.
+        m.forEach((match, groupIndex) => {
+          console.log(`Found match, group ${groupIndex}: ${match}`);
+        });
+      }
+    };
+
+    eleFile.onchange = function (event) {
+      var file = event.target.files[0];
+      if (file) {
+        reader.readAsText(file);
+      }
+    };
+  </script>
+</body>
+
+</html>
