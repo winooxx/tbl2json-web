@@ -21,24 +21,19 @@
   </div>
   <div class="new_json">
     <h2>转换后的json</h2>
-    <div class="notice">
-      点击右边图标转换
-      <input type="button" id="convertfile" class="upfile">
-      <label for="convertfile" class="ui-button ui-button-warning">点击转换</label>
-    </div>
     <textarea name="new_json" id="new_json" cols="30" rows="10" readonly></textarea>
   </div>
 
   <script>
-    var tblInput = document.getElementById('tbl');
-    var jsonOutput = document.getElementById('new_json');
-    var eleFile = document.getElementById('upfile');
-    var eleConvert = document.getElementById('convertFile');
-    var result = null;
+    const tblInput = document.getElementById('tbl');
+    const jsonOutput = document.getElementById('new_json');
+    const eleFile = document.getElementById('upfile');
+    const convertEntries = [];
+    let result = null;
 
     // 创建一个 FileReader 用来读取本地文件
-    var reader = new FileReader();
-    reader.onload = function (e) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
       result = e.target.result;
       // 把读到的内容打在 textarea 内
       tblInput.value = e.target.result;
@@ -61,14 +56,48 @@
         }
 
         // The result can be accessed through the `m`-variable.
-        m.forEach((match, groupIndex) => {
-          console.log(`Found match, group ${groupIndex}: ${match}`);
-        });
-      }
+        // m.forEach((match, groupIndex) => {
+        //   console.log(`Found match, group ${groupIndex}: ${match}`);
+        // });
+        m.forEach((match) => {
+          const temp = match.split(',');
+          const entry = {
+            id: parseInt(temp[0]),
+            name: temp[1],
+            ver: parseInt(temp[2]),
+            bpm: parseInt(temp[3]),
+            sortID: parseInt(temp[4]),
+            dress: parseInt(temp[5]),
+            dark: parseInt(temp[6]),
+            mile: parseInt(temp[7]),
+            rank: parseInt(temp[8]),
+            vl: parseInt(temp[9]),
+            event: parseInt(temp[10]),
+            rec: parseInt(temp[11]),
+            pvStart: parseInt(temp[12]),
+            pvEnd: parseInt(temp[13]),
+            songLength: parseInt(temp[14]),
+            offRanking: parseInt(temp[15]),
+            adDef: parseInt(temp[16]),
+            remaster: parseInt(temp[17]),
+            specialPV: parseInt(temp[18]),
+            challengeTrack: parseInt(temp[19]),
+            bonus: parseInt(temp[20]),
+            genreID: parseInt(temp[21]),
+            title: temp[22],
+            artist: temp[23],
+            sort_jp_index: parseInt(temp[24]),
+            sort_ex_index: parseInt(temp[25]),
+            filename: temp[26]
+          };
+          convertEntries.push(entry);
+        })
+      };
+      jsonOutput.value = JSON.stringify(convertEntries);
     };
 
-    eleFile.onchange = function (event) {
-      var file = event.target.files[0];
+    eleFile.onchange = () => {
+      const file = event.target.files[0];
       if (file) {
         reader.readAsText(file);
       }
