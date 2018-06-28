@@ -107,7 +107,7 @@
     const jsonOutput = document.getElementById('new_json');
     const eleFile = document.getElementById('upfile');
     const downloadButton = document.getElementById('download_button');
-    const convertEntries = [];
+    const convertEntities = [];
     const date = `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`;
     let result = null;
     let finalData = null;
@@ -167,7 +167,7 @@
         // The result can be accessed through the `m`-variable.
         m.forEach((match) => {
           const temp = match.split(',');
-          const entry = {
+          const entity = {
             id: parseInt(temp[0]),
             name: temp[1],
             ver: parseInt(temp[2]),
@@ -196,10 +196,10 @@
             sort_ex_index: parseInt(temp[25]),
             filename: temp[26]
           };
-          convertEntries.push(entry);
+          convertEntities.push(entity);
         })
       };
-      finalData = JSON.stringify(convertEntries);
+      finalData = JSON.stringify(convertEntities);
       jsonOutput.value = finalData;
     };
 
