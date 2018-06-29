@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>mmMusic转换器</title>
+  <title>mmTextout转换器</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -81,7 +81,7 @@
 </head>
 
 <body>
-  <h1>mmMusic转换器</h1>
+  <h1>mmTextout转换器</h1>
   <div class="container">
     <div class="old_tbl">
       <h2>待转换的tbl</h2>
@@ -114,6 +114,16 @@
     let result = null;
     let finalData = null;
 
+    const MMTEXTOUT = function (codename, jpn_translation, exp_translation) {
+      const entity = {
+        codename,
+        jpn_translation,
+        exp_translation
+      };
+      console.log(entity);
+      convertEntities.push(entity);
+    };
+
     // 点击下载按钮触发的事件
     const funDownload = (content, filename) => {
       if (content) {
@@ -136,7 +146,7 @@
     if ('download' in document.createElement('a')) {
       // 作为mmmusic-${date}.json文件下载
       downloadButton.addEventListener('click', () => {
-        funDownload(jsonOutput.value, `mmMusic-${date}.json`);
+        funDownload(jsonOutput.value, `mmTextout-${date}.json`);
       });
     } else {
       eleButton.onclick = () => {
@@ -151,16 +161,17 @@
       // 把读到的内容打在 textarea 内
       tblInput.value = e.target.result;
 
-      if (result.match(/mmMusic\.tbl/gi)) {
+      if (result.match(/mmtextout\.tbl/gi)) {
 
         // 正则匹配规则
         // 1. 匹配所有除换行符以外的空白字符，删除
-        // 2. 匹配所有以 // 开头的文字（即注释），删除
-        // 3. 匹配所有的"（英文双引号），删除
-        result = result.replace(/ +/gi, "").replace(/\/\/.*/g, "").replace(/"/gi, "");
+        // 2. 匹配所有以 // 或者 # 开头的文字（即注释），删除
+        // 3. 匹配所有的 L"（英文双引号），删除
+        // 4. 匹配所有的 "（英文双引号），删除
+        result = result.replace(/ \bL+/gi, "").replace(/ ,L+/gi, ",").replace(/ \)+/gi, ")").replace(/\/\/.*/g, "").replace(/#.*/g, "");
 
         // Auto-generated code
-        const regex = /(?<=\()\S+(?=\))/g;
+        const regex = /MMTEXTOUT.*/g;
         let m;
         while ((m = regex.exec(result)) !== null) {
           // This is necessary to avoid infinite loops with zero-width matches
@@ -170,44 +181,15 @@
 
           // The result can be accessed through the `m`-variable.
           m.forEach((match) => {
-            const temp = match.split(',');
-            const entity = {
-              id: parseInt(temp[0]),
-              name: temp[1],
-              ver: parseInt(temp[2]),
-              bpm: parseInt(temp[3]),
-              sortID: parseInt(temp[4]),
-              dress: parseInt(temp[5]),
-              dark: parseInt(temp[6]),
-              mile: parseInt(temp[7]),
-              rank: parseInt(temp[8]),
-              vl: parseInt(temp[9]),
-              event: parseInt(temp[10]),
-              rec: parseInt(temp[11]),
-              pvStart: parseInt(temp[12]),
-              pvEnd: parseInt(temp[13]),
-              songLength: parseInt(temp[14]),
-              offRanking: parseInt(temp[15]),
-              adDef: parseInt(temp[16]),
-              remaster: parseInt(temp[17]),
-              specialPV: parseInt(temp[18]),
-              challengeTrack: parseInt(temp[19]),
-              bonus: parseInt(temp[20]),
-              genreID: parseInt(temp[21]),
-              title: temp[22],
-              artist: temp[23],
-              sort_jp_index: parseInt(temp[24]),
-              sort_ex_index: parseInt(temp[25]),
-              filename: temp[26]
-            };
-            convertEntities.push(entity);
+            eval(match);
           })
         };
+
         finalData = JSON.stringify(convertEntities);
         jsonOutput.value = finalData;
       } else {
-        alert('只可以转换mmMusic.tbl');
-        jsonOutput.value = '不是mmMusic.tbl，无法转换为JSON';
+        alert('只可以转换mmtextout.tbl');
+        jsonOutput.value = '不是mmtextout.tbl，无法转换为JSON';
       }
     };
 
