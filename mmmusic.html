@@ -8,7 +8,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
-
     textarea {
       width: 400px;
       height: 600px;
@@ -152,58 +151,64 @@
       // 把读到的内容打在 textarea 内
       tblInput.value = e.target.result;
 
-      // 正则匹配规则
-      // 1. 匹配所有除换行符以外的空白字符，删除
-      // 2. 匹配所有以 // 开头的文字（即注释），删除
-      // 3. 匹配所有的"（英文双引号），删除
-      result = result.replace(/ +/gi, "").replace(/\/\/.*/g, "").replace(/"/gi, "");
+      if (result.match(/mmMusic\.tbl/gi)) {
 
-      // Auto-generated code
-      const regex = /(?<=\()\S+(?=\))/g;
-      let m;
-      while ((m = regex.exec(result)) !== null) {
-        // This is necessary to avoid infinite loops with zero-width matches
-        if (m.index === regex.lastIndex) {
-          regex.lastIndex++;
-        }
+        // 正则匹配规则
+        // 1. 匹配所有除换行符以外的空白字符，删除
+        // 2. 匹配所有以 // 开头的文字（即注释），删除
+        // 3. 匹配所有的"（英文双引号），删除
+        result = result.replace(/ +/gi, "").replace(/\/\/.*/g, "").replace(/"/gi, "");
 
-        // The result can be accessed through the `m`-variable.
-        m.forEach((match) => {
-          const temp = match.split(',');
-          const entity = {
-            id: parseInt(temp[0]),
-            name: temp[1],
-            ver: parseInt(temp[2]),
-            bpm: parseInt(temp[3]),
-            sortID: parseInt(temp[4]),
-            dress: parseInt(temp[5]),
-            dark: parseInt(temp[6]),
-            mile: parseInt(temp[7]),
-            rank: parseInt(temp[8]),
-            vl: parseInt(temp[9]),
-            event: parseInt(temp[10]),
-            rec: parseInt(temp[11]),
-            pvStart: parseInt(temp[12]),
-            pvEnd: parseInt(temp[13]),
-            songLength: parseInt(temp[14]),
-            offRanking: parseInt(temp[15]),
-            adDef: parseInt(temp[16]),
-            remaster: parseInt(temp[17]),
-            specialPV: parseInt(temp[18]),
-            challengeTrack: parseInt(temp[19]),
-            bonus: parseInt(temp[20]),
-            genreID: parseInt(temp[21]),
-            title: temp[22],
-            artist: temp[23],
-            sort_jp_index: parseInt(temp[24]),
-            sort_ex_index: parseInt(temp[25]),
-            filename: temp[26]
-          };
-          convertEntities.push(entity);
-        })
-      };
-      finalData = JSON.stringify(convertEntities);
-      jsonOutput.value = finalData;
+        // Auto-generated code
+        const regex = /(?<=\()\S+(?=\))/g;
+        let m;
+        while ((m = regex.exec(result)) !== null) {
+          // This is necessary to avoid infinite loops with zero-width matches
+          if (m.index === regex.lastIndex) {
+            regex.lastIndex++;
+          }
+
+          // The result can be accessed through the `m`-variable.
+          m.forEach((match) => {
+            const temp = match.split(',');
+            const entity = {
+              id: parseInt(temp[0]),
+              name: temp[1],
+              ver: parseInt(temp[2]),
+              bpm: parseInt(temp[3]),
+              sortID: parseInt(temp[4]),
+              dress: parseInt(temp[5]),
+              dark: parseInt(temp[6]),
+              mile: parseInt(temp[7]),
+              rank: parseInt(temp[8]),
+              vl: parseInt(temp[9]),
+              event: parseInt(temp[10]),
+              rec: parseInt(temp[11]),
+              pvStart: parseInt(temp[12]),
+              pvEnd: parseInt(temp[13]),
+              songLength: parseInt(temp[14]),
+              offRanking: parseInt(temp[15]),
+              adDef: parseInt(temp[16]),
+              remaster: parseInt(temp[17]),
+              specialPV: parseInt(temp[18]),
+              challengeTrack: parseInt(temp[19]),
+              bonus: parseInt(temp[20]),
+              genreID: parseInt(temp[21]),
+              title: temp[22],
+              artist: temp[23],
+              sort_jp_index: parseInt(temp[24]),
+              sort_ex_index: parseInt(temp[25]),
+              filename: temp[26]
+            };
+            convertEntities.push(entity);
+          })
+        };
+        finalData = JSON.stringify(convertEntities);
+        jsonOutput.value = finalData;
+      } else {
+        alert('只可以转换mmMusic.tbl');
+        jsonOutput.value = '不是mmMusic.tbl，无法转换为JSON';
+      }
     };
 
     eleFile.onchange = () => {
@@ -214,4 +219,5 @@
     };
   </script>
 </body>
+
 </html>
