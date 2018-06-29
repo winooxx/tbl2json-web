@@ -162,12 +162,14 @@
       resultSplit = result.split('\n');
 
       for (let i = 0; i < resultSplit.length; i++) {
-        let temp = resultSplit[i].split(',');
-        let entity = {
-          name: temp[0],
-          filepath: temp[1]
+        if (resultSplit[i] !== '') {
+          let temp = resultSplit[i].split(',');
+          let entity = {
+            name: temp[0],
+            filepath: temp[1]
+          }
+          convertEntities.push(entity);
         }
-        convertEntities.push(entity);
       }
 
       finalData = JSON.stringify(convertEntities);
