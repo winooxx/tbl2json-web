@@ -173,9 +173,9 @@
             const temp = match.split(',');
             const entity = {
               id: parseInt(temp[0]),
-              name: temp[1],
-              level: parseInt(temp[2]),
-              score_creator_id: parseInt(temp[3]),
+              enumId: parseInt(temp[1].match(/[0-9]{3}/)),
+              lv: parseInt(temp[2]),
+              noteDesignerId: parseInt(temp[3]),
               safename: temp[4]
             };
             convertEntities.push(entity);

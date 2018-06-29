@@ -114,11 +114,11 @@
     let result = null;
     let finalData = null;
 
-    const MMTEXTOUT = function (codename, jpn_translation, exp_translation) {
+    const MMTEXTOUT = function (key, jpValue, exValue) {
       const entity = {
-        codename,
-        jpn_translation,
-        exp_translation
+        key,
+        jpValue,
+        exValue
       };
       console.log(entity);
       convertEntities.push(entity);
