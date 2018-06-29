@@ -134,7 +134,7 @@
     };
 
     if ('download' in document.createElement('a')) {
-      // 作为test.html文件下载
+      // 作为mmmusic-${date}.json文件下载
       downloadButton.addEventListener('click', () => {
         funDownload(jsonOutput.value, `mmmusic-${date}.json`);
       });
